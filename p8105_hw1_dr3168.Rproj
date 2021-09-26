@@ -1,13 +1,59 @@
-Version: 1.0
+---
+title: "p8105_hw_dr3168"
+author: "Daniela Rochez"
+date: "9/22/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 
-RestoreWorkspace: Default
-SaveWorkspace: Default
-AlwaysSaveHistory: Default
+## R Markdown
 
-EnableCodeIndexing: Yes
-UseSpacesForTab: Yes
-NumSpacesForTab: 2
-Encoding: UTF-8
-
-RnwWeave: Sweave
-LaTeX: pdfLaTeX
+#The following will show a sample size of 10 with a normal distribution. This includes multiple variables such as a logical vector, character vector, and factor vector.
+```{r}
+library(tidyverse)
+hw1_df = tibble(
+  vec_numeric = runif(10),
+  vec_char = c("aa", "bb", "cc", "dd","ee","ff","gg","hh","ii","jj"),
+  vec_logical = vec_numeric >0,
+  vec_factor = factor(c("male", "male", "female", "female","female", "female","female", "female", "male", "female")))
+```
+#Checking the data frame
+```{r}
+hw1_df
+```
+# Checking to find the mean of the variables. Mean worked for the vec_logical and vec_numeric variables because they had numerical values.
+```{r}
+mean(pull(hw1_df,vec_numeric))  
+mean(pull(hw1_df,vec_char))
+mean(pull(hw1_df,vec_logical))
+mean(pull(hw1_df,vec_factor))
+```
+# Converting one type of variable to the other. NAs were introduced as coercionfor the vec_char variable. The vec_factor variable was turned into 1s and 2s.
+```{r}
+as.numeric(pull(hw1_df,vec_logical))
+as.numeric(pull(hw1_df,vec_char))
+as.numeric(pull(hw1_df,vec_factor))
+```
+# Installing packages and looking at variables
+```{r}
+data("penguins", package = "palmerpenguins")
+penguins
+# Varibles include species, island, bill length in millimeters, bill depth in millimeters,flipper length in millimeters, body mass in grams, sex, and year
+```
+#Checking the size of the penguins dataset
+```{r}
+nrow(penguins)
+ncol(penguins)
+```
+#Checking the mean flipper length
+```{r}
+penguin_flipper_length<-pull(penguins, flipper_length_mm)  #pulling out the variable of penguin flipper length
+penguin_flipper_length #shows the values of flipper lengths
+mean(penguin_flipper_length,na.rm= "True") #finding the mean while removing any NA values
+```
+#Making scatter plot for the penguins dataset
+```{r}
+ggplot(penguins, aes(x=bill_length_mm, y= flipper_length_mm))+  geom_point(aes(color = species))
+ggsave
+```
